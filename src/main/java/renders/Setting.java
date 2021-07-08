@@ -1,12 +1,14 @@
 package renders;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class Setting {
     private final Type type;
     private Object value;
 
-    public Setting(Type type, Object value) {
+    public Setting(Type type, @NotNull Object value) {
         this.type = type;
         this.value = value;
     }
@@ -15,11 +17,13 @@ public class Setting {
         return type;
     }
 
-    public Object getValue() {
-        return value;
+    @NotNull
+    public <V> V getValue() {
+        return (V) value;
     }
 
-    public void setValue(Object value) {
+
+    public void setValue(@NotNull Object value) {
         this.value = value;
     }
 
