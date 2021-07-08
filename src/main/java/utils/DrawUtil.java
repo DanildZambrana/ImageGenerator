@@ -15,8 +15,8 @@ public class DrawUtil {
      * @param text The text to draw.
      * @param font the font used to generate the text.
      * @param textColor The color of the text.
-     * @param xOffset Position of the text in base image, if is null Centered is used by default.
-     * @param yOffset Position of the text in base image, if is null Centered is used by default.
+     * @param xOffset Position of the text in base image, if is -1 Centered is used by default.
+     * @param yOffset Position of the text in base image, if is -1 Centered is used by default.
      * @return the buffered image with the text.
      */
     public BufferedImage drawFancyText(int width, int height, String text, Font font, Color textColor, Integer xOffset,
@@ -29,11 +29,11 @@ public class DrawUtil {
             textGraphics.setFont(font);
 
             FontMetrics fontMetrics = textGraphics.getFontMetrics();
-            if (xOffset == null) { //Set to center
+            if (xOffset == -1) { //Set to center
                 xOffset = (width - fontMetrics.stringWidth(text)) / 2;
             }
 
-            if (yOffset == null) { //Set to center
+            if (yOffset == -1) { //Set to center
                 yOffset = (fontMetrics.getAscent() + (height - (fontMetrics.getAscent() + fontMetrics.getDescent())) / 2);
             }
 
