@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class AbstractRender {
@@ -34,19 +35,14 @@ public abstract class AbstractRender {
         return settings;
     }
 
-    @Nullable
-    public Setting getSetting(Setting.Type type) {
+    public Optional<Setting> getSetting(Setting.Type type) {
         for (Setting setting : getSettings()) {
             if (setting.getType() == type) {
-                return setting;
+                return Optional.of(setting);
             }
         }
 
-        return null;
-    }
-
-    public Logger getLogger() {
-        return logger;
+        return Optional.empty();
     }
 
     public boolean hasSetting(Setting.Type type) {
@@ -57,5 +53,13 @@ public abstract class AbstractRender {
         }
 
         return false;
+    }
+
+    public void addSetting(Setting.Type type, Object value) {
+        getSettings().add(new Setting(type, value));
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }
