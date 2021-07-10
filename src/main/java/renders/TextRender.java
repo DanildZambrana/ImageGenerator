@@ -2,6 +2,7 @@ package renders;
 
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import utils.Converters;
 import utils.DrawUtil;
 import utils.FontStyle;
 import utils.PlaceholderUtil;
@@ -61,51 +62,41 @@ public class TextRender extends AbstractRender {
 
         //Load font color
         Optional<Setting> optionalColorSetting = getSetting(Setting.Type.COLOR);
-        Color color = new Color(255, 255, 255);
-        if (optionalColorSetting.isPresent()) {
+        if (optionalColorSetting.isEmpty()) {
+            getLogger().warn("Render color of font is empty. Using default Value = 0, 0, 0");
+            addSetting(Setting.Type.COLOR, new Color(0, 0, 0, 255));
+        } else {
             Setting setting = optionalColorSetting.get();
-            if (!(setting.getValue() instanceof Color)) {
-                if (setting.getValue() instanceof String) {
-                    String value = setting.getValue();
-                    String[] values = value.split(",");
-                    try {
-                        color = new Color(
-                                Integer.parseInt(values[0]),
-                                Integer.parseInt(values[1]),
-                                Integer.parseInt(values[2])
-                        );
-                    } catch (NumberFormatException exception) {
-                        getLogger().warn("This value= '" + setting.getValue() + "' not is a color or not is convertible "
-                                + "to color!. \n Using default value = 255,255,255");
-                    }
+
+            if (!(setting.getValue() instanceof Color) && setting.getValue() instanceof String) {
+                Optional<Color> result = Converters.convertStringToColor(setting.getValue());
+                if (result.isEmpty()) {
+                    addSetting(Setting.Type.COLOR, new Color(255, 255, 255, 255));
+                    getLogger().warn("This value= '" + setting.getValue() + "' not is a color or not is convertible "
+                            + "to color!. \n Using default value = 255,255,255");
                 } else {
-                    getLogger().warn("Provided color value is not supported. Using default value = 255,255,255");
+                    addSetting(Setting.Type.COLOR, result.get());
                 }
-            } else {
-                color = setting.getValue();
             }
         }
-        addSetting(Setting.Type.COLOR, color);
-
         //Load Style
         Optional<Setting> optionalStyleSetting = getSetting(Setting.Type.STYLE);
-        int style = Font.PLAIN;
-        if (optionalStyleSetting.isPresent()) {
+        if (optionalStyleSetting.isEmpty()) {
+            getLogger().warn("Render style of font is empty. Using default value = PLAIN");
+            addSetting(Setting.Type.STYLE, Font.PLAIN);
+        } else {
             Setting setting = optionalStyleSetting.get();
-            if (!(setting.getValue() instanceof Integer)) {
-                if (setting.getValue() instanceof String) {
-                    try {
-                        style = FontStyle.valueOf(setting.getValue()).getValue();
-                    } catch (IllegalArgumentException exception) {
-                        getLogger().warn("Provided Style value is not supported. Using default value = PLAIN");
-                    }
-                }else {
+            if (!(setting.getValue() instanceof Integer) && setting.getValue() instanceof String) {
+                Optional<Integer> result = Converters.convertStringToFontStyle(setting.getValue());
+
+                if (result.isEmpty()) {
+                    addSetting(Setting.Type.STYLE, Font.PLAIN);
                     getLogger().warn("Provided Style value is not supported. Using default value = PLAIN");
+                } else {
+                    addSetting(Setting.Type.STYLE, result.get());
                 }
             }
         }
-        addSetting(Setting.Type.STYLE, style);
-
 
         //Load X Offset
         Optional<Setting> optionalXOffsetSetting = getSetting(Setting.Type.X_OFFSET);
