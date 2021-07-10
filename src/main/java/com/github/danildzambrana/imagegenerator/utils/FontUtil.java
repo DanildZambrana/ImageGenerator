@@ -46,9 +46,10 @@ public class FontUtil {
 
     /**
      * Download file to provided path.
+     *
      * @param executor the executor to use.
-     * @param url the url to download the file.
-     * @param path the path to download the file.
+     * @param url      the url to download the file.
+     * @param path     the path to download the file.
      * @param fileName the name of download file.
      * @return instance of {@link CompletableFuture} with download file process.
      */
@@ -61,13 +62,11 @@ public class FontUtil {
                     throw new IOException("The provided path is not a directory");
                 }
 
-                if (folder.exists()) {
-                    if (!folder.mkdir()) {
-                        try {
-                            throw new IOException("The directory cannot be created");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                if (folder.exists() && !folder.mkdir()) {
+                    try {
+                        throw new IOException("The directory cannot be created");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
 

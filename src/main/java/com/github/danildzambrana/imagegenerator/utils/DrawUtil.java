@@ -23,6 +23,8 @@ public class DrawUtil {
                                        Integer yOffset) {
         BufferedImage textLayer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D textGraphics = textLayer.createGraphics();
+        Integer xOffsetTemp = xOffset;
+        Integer yOffsetTemp = yOffset;
 
         try {
             textGraphics.setColor(textColor);
@@ -30,14 +32,15 @@ public class DrawUtil {
 
             FontMetrics fontMetrics = textGraphics.getFontMetrics();
             if (xOffset == -1) { //Set to center
-                xOffset = (width - fontMetrics.stringWidth(text)) / 2;
+                xOffsetTemp = (width - fontMetrics.stringWidth(text)) / 2;
             }
 
             if (yOffset == -1) { //Set to center
-                yOffset = (fontMetrics.getAscent() + (height - (fontMetrics.getAscent() + fontMetrics.getDescent())) / 2);
+                yOffsetTemp =
+                        (fontMetrics.getAscent() + (height - (fontMetrics.getAscent() + fontMetrics.getDescent())) / 2);
             }
 
-            textGraphics.drawString(text, xOffset, yOffset);
+            textGraphics.drawString(text, xOffsetTemp, yOffsetTemp);
             return textLayer;
         } finally {
             textGraphics.dispose();

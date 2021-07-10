@@ -23,43 +23,54 @@ public class TextRender extends AbstractRender {
         this.placeholderUtil = placeholderUtil;
         this.drawUtil = drawUtil;
 
-        //Load Text
-        if (!hasSetting(Setting.Type.TEXT)) {
-            getSettings().add(new Setting(Setting.Type.TEXT, "DEFAULT TEXT VALUE"));
-        }
+        loadText();
+        loadFont();
+        loadFontSize();
+        loadFontColor();
+        loadFontStyle();
+        loadOffset(Setting.Type.X_OFFSET);
+        loadOffset(Setting.Type.Y_OFFSET);
+    }
 
-        //Load Font
-        String defaultFont = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()[0];
-        Optional<Setting> optionalFontSetting = getSetting(Setting.Type.FONT);
-        if (optionalFontSetting.isPresent()) {
-            Setting setting = optionalFontSetting.get();
-            Optional<String> first =
-                    Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames())
-                            .filter(font -> setting.getValue().equals(font))
-                            .findFirst();
-
-            if (first.isEmpty()) {
-                getLogger().warn("The specified font cannot be loaded, using default font, '" + defaultFont + "'!");
-                addSetting(Setting.Type.FONT, defaultFont);
+    private void loadOffset(Setting.Type offset) {
+        Optional<Setting> optionalOffsetSetting = getSetting(offset);
+        int position = -1;
+        if (optionalOffsetSetting.isPresent()) {
+            Setting setting = optionalOffsetSetting.get();
+            if (setting.getValue() instanceof Integer) {
+                position = setting.getValue();
+            } else if (setting.getValue() instanceof String) {
+                String value = setting.getValue();
+                if (!value.equalsIgnoreCase("CENTERED")) {
+                    getLogger().warn("Provided value is not supported, using default value CENTERED");
+                }
+            } else {
+                getLogger().warn("Provided value is not supported, using default value CENTERED");
             }
-        } else {
-            addSetting(Setting.Type.FONT, defaultFont);
         }
+        addSetting(offset, position);
+    }
 
-        //Load Size
-        Optional<Setting> optionalSizeSetting = getSetting(Setting.Type.SIZE);
-        if (optionalSizeSetting.isPresent()) {
-            Setting setting = optionalSizeSetting.get();
-            if (!(setting.getValue() instanceof Integer)) {
-                getLogger().warn("The size of the text is invalid. Current value = '" + setting.getValue() + "' using"
-                        + " default size. '" + 12 + "'");
-                addSetting(Setting.Type.SIZE, 12);
+    private void loadFontStyle() {
+        Optional<Setting> optionalStyleSetting = getSetting(Setting.Type.STYLE);
+        if (optionalStyleSetting.isEmpty()) {
+            getLogger().warn("Render style of font is empty. Using default value = PLAIN");
+            addSetting(Setting.Type.STYLE, Font.PLAIN);
+        } else {
+            Setting setting = optionalStyleSetting.get();
+            if (!(setting.getValue() instanceof Integer) && setting.getValue() instanceof String) {
+                Optional<Integer> result = Converters.convertStringToFontStyle(setting.getValue());
+
+                if (result.isEmpty()) {
+                    addSetting(Setting.Type.STYLE, Font.PLAIN);
+                } else {
+                    addSetting(Setting.Type.STYLE, result.get());
+                }
             }
-        } else {
-            addSetting(Setting.Type.SIZE, 12);
         }
+    }
 
-        //Load font color
+    private void loadFontColor() {
         Optional<Setting> optionalColorSetting = getSetting(Setting.Type.COLOR);
         if (optionalColorSetting.isEmpty()) {
             getLogger().warn("Render color of font is empty. Using default Value = 0, 0, 0");
@@ -78,59 +89,45 @@ public class TextRender extends AbstractRender {
                 }
             }
         }
-        //Load Style
-        Optional<Setting> optionalStyleSetting = getSetting(Setting.Type.STYLE);
-        if (optionalStyleSetting.isEmpty()) {
-            getLogger().warn("Render style of font is empty. Using default value = PLAIN");
-            addSetting(Setting.Type.STYLE, Font.PLAIN);
+    }
+
+    private void loadFontSize() {
+        Optional<Setting> optionalSizeSetting = getSetting(Setting.Type.SIZE);
+        if (optionalSizeSetting.isPresent()) {
+            Setting setting = optionalSizeSetting.get();
+            if (!(setting.getValue() instanceof Integer)) {
+                getLogger().warn("The size of the text is invalid. Current value = '" + setting.getValue() + "' using"
+                        + " default size. '" + 12 + "'");
+                addSetting(Setting.Type.SIZE, 12);
+            }
         } else {
-            Setting setting = optionalStyleSetting.get();
-            if (!(setting.getValue() instanceof Integer) && setting.getValue() instanceof String) {
-                Optional<Integer> result = Converters.convertStringToFontStyle(setting.getValue());
-
-                if (result.isEmpty()) {
-                    addSetting(Setting.Type.STYLE, Font.PLAIN);
-                } else {
-                    addSetting(Setting.Type.STYLE, result.get());
-                }
-            }
+            addSetting(Setting.Type.SIZE, 12);
         }
+    }
 
-        //Load X Offset
-        Optional<Setting> optionalXOffsetSetting = getSetting(Setting.Type.X_OFFSET);
-        int positionX = -1;
-        if (optionalXOffsetSetting.isPresent()) {
-            Setting setting = optionalXOffsetSetting.get();
-            if (setting.getValue() instanceof Integer) {
-                positionX = setting.getValue();
-            }else if (setting.getValue() instanceof String) {
-                String value = setting.getValue();
-                if (!value.equalsIgnoreCase("CENTERED")) {
-                    getLogger().warn("Provided value is not supported, using default value CENTERED");
-                }
-            } else {
-                getLogger().warn("Provided value is not supported, using default value CENTERED");
-            }
-        }
-        addSetting(Setting.Type.X_OFFSET, positionX);
+    private void loadFont() {
+        String defaultFont = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()[0];
+        Optional<Setting> optionalFontSetting = getSetting(Setting.Type.FONT);
+        if (optionalFontSetting.isPresent()) {
+            Setting setting = optionalFontSetting.get();
+            Optional<String> first =
+                    Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames())
+                            .filter(font -> setting.getValue().equals(font))
+                            .findFirst();
 
-        //Load Y Offset
-        Optional<Setting> optionalYOffsetSetting = getSetting(Setting.Type.Y_OFFSET);
-        int positionY = -1;
-        if (optionalYOffsetSetting.isPresent()) {
-            Setting setting = optionalYOffsetSetting.get();
-            if (setting.getValue() instanceof Integer) {
-                positionY = setting.getValue();
-            }else if (setting.getValue() instanceof String) {
-                String value = setting.getValue();
-                if (!value.equalsIgnoreCase("CENTERED")) {
-                    getLogger().warn("Provided value is not supported, using default value CENTERED");
-                }
-            } else {
-                getLogger().warn("Provided value is not supported, using default value CENTERED");
+            if (first.isEmpty()) {
+                getLogger().warn("The specified font cannot be loaded, using default font, '" + defaultFont + "'!");
+                addSetting(Setting.Type.FONT, defaultFont);
             }
+        } else {
+            addSetting(Setting.Type.FONT, defaultFont);
         }
-        addSetting(Setting.Type.Y_OFFSET, positionY);
+    }
+
+    private void loadText() {
+        if (!hasSetting(Setting.Type.TEXT)) {
+            getSettings().add(new Setting(Setting.Type.TEXT, "DEFAULT TEXT VALUE"));
+        }
     }
 
     /**

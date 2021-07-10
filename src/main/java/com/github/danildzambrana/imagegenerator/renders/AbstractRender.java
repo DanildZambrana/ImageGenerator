@@ -2,7 +2,8 @@ package com.github.danildzambrana.imagegenerator.renders;
 
 import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.Set;
