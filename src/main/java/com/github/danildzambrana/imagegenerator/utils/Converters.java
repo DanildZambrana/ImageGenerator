@@ -1,4 +1,4 @@
-package utils;
+package com.github.danildzambrana.imagegenerator.utils;
 
 import java.awt.*;
 import java.util.Optional;

@@ -1,9 +1,11 @@
-import renders.AbstractRender;
-import renders.BackgroundColorRender;
-import renders.Setting;
-import renders.TextRender;
-import utils.DrawUtil;
-import utils.PlaceholderUtil;
+package com.github.danildzambrana.imagegenerator;
+
+import com.github.danildzambrana.imagegenerator.renders.AbstractRender;
+import com.github.danildzambrana.imagegenerator.renders.BackgroundColorRender;
+import com.github.danildzambrana.imagegenerator.renders.Setting;
+import com.github.danildzambrana.imagegenerator.renders.TextRender;
+import com.github.danildzambrana.imagegenerator.utils.DrawUtil;
+import com.github.danildzambrana.imagegenerator.utils.PlaceholderUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

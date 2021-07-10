@@ -1,7 +1,6 @@
-package renders;
+package com.github.danildzambrana.imagegenerator.renders;
 
 import org.apache.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

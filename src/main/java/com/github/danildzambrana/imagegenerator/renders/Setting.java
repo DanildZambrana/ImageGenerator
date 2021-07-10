@@ -1,4 +1,4 @@
-package renders;
+package com.github.danildzambrana.imagegenerator.renders;
 
 import org.jetbrains.annotations.NotNull;
 

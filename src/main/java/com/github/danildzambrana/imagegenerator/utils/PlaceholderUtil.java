@@ -1,6 +1,5 @@
-package utils;
+package com.github.danildzambrana.imagegenerator.utils;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PlaceholderUtil {

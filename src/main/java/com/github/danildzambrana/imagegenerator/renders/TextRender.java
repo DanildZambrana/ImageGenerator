@@ -1,11 +1,10 @@
-package renders;
+package com.github.danildzambrana.imagegenerator.renders;
 
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import utils.Converters;
-import utils.DrawUtil;
-import utils.FontStyle;
-import utils.PlaceholderUtil;
+import com.github.danildzambrana.imagegenerator.utils.Converters;
+import com.github.danildzambrana.imagegenerator.utils.DrawUtil;
+import com.github.danildzambrana.imagegenerator.utils.PlaceholderUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
