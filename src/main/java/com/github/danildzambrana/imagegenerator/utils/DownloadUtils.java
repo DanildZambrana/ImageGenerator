@@ -32,26 +32,24 @@ public class DownloadUtils {
      * @param fileName the name of download file.
      * @return instance of {@link CompletableFuture} with download file process.
      */
-    public static CompletableFuture<File> downloadFileAsync(Executor executor, String url, String path, String fileName) {
+    public static CompletableFuture<File> downloadFileAsync(Executor executor,
+                                                            String url,
+                                                            String path,
+                                                            String fileName) {
         Supplier<File> supplier = () -> {
             try {
                 File folder = new File(path);
 
-                if (!folder.isDirectory()) {
+                if (folder.exists() && !folder.isDirectory()) {
                     throw new IOException("The provided path is not a directory");
                 }
 
-                if (folder.exists() && !folder.mkdir()) {
-                    try {
-                        throw new IOException("The directory cannot be created");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (!folder.exists() && !folder.mkdir()) {
+                    throw new IOException("The directory cannot be created");
                 }
 
                 InputStream inputStream;
                 OutputStream outputStream;
-
                 File file = new File(folder, fileName);
 
                 inputStream = openStream(url);
@@ -67,7 +65,6 @@ public class DownloadUtils {
 
                 outputStream.close();
                 inputStream.close();
-
                 return file;
             } catch (IOException e) {
                 e.printStackTrace();
