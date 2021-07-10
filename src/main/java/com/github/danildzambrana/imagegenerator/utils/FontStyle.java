@@ -1,6 +1,6 @@
 package com.github.danildzambrana.imagegenerator.utils;
 
-import java.awt.*;
+import java.awt.Font;
 
 public enum FontStyle {
     PLAIN(Font.PLAIN),

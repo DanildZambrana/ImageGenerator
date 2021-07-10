@@ -29,11 +29,8 @@ public class FontUtil {
         if (folder.isDirectory()) {
             throw new IOException("The provided path is not a directory");
         }
-
-        if (folder.exists()) {
-            if (!folder.mkdir()) {
-                throw new IOException("The directory cannot be created");
-            }
+        if (folder.exists() && !folder.mkdir()) {
+            throw new IOException("The directory cannot be created");
         }
 
         File font = new File(folder, fontName);

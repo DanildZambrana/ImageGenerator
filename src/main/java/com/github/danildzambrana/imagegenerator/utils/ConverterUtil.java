@@ -3,7 +3,7 @@ package com.github.danildzambrana.imagegenerator.utils;
 import java.awt.*;
 import java.util.Optional;
 
-public class Converters {
+public class ConverterUtil {
     /**
      * Convert valid string to a color instance
      * valid string is 0,0,0 to 255,255,255

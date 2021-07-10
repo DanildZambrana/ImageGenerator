@@ -1,8 +1,7 @@
 package com.github.danildzambrana.imagegenerator.renders;
 
 import org.apache.log4j.Logger;
-import com.github.danildzambrana.imagegenerator.utils.Converters;
-import com.github.danildzambrana.imagegenerator.utils.DrawUtil;
+import com.github.danildzambrana.imagegenerator.utils.ConverterUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public class BackgroundColorRender extends AbstractRender{
-    private DrawUtil drawUtil;
     public BackgroundColorRender(Set<Setting> settings,
                                  int width,
                                  int height) {
@@ -24,7 +22,7 @@ public class BackgroundColorRender extends AbstractRender{
             Setting setting = optionalColorSetting.get();
 
             if (!(setting.getValue() instanceof Color) && setting.getValue() instanceof String) {
-                Optional<Color> result = Converters.convertStringToColor(setting.getValue());
+                Optional<Color> result = ConverterUtil.convertStringToColor(setting.getValue());
                 if (result.isEmpty()) {
                     addSetting(Setting.Type.COLOR, new Color(0, 0, 0, 255));
                     getLogger().warn("This value= '" + setting.getValue() + "' not is a color or not is convertible "

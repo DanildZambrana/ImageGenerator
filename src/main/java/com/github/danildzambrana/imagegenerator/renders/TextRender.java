@@ -2,7 +2,7 @@ package com.github.danildzambrana.imagegenerator.renders;
 
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import com.github.danildzambrana.imagegenerator.utils.Converters;
+import com.github.danildzambrana.imagegenerator.utils.ConverterUtil;
 import com.github.danildzambrana.imagegenerator.utils.DrawUtil;
 import com.github.danildzambrana.imagegenerator.utils.PlaceholderUtil;
 
@@ -59,7 +59,7 @@ public class TextRender extends AbstractRender {
         } else {
             Setting setting = optionalStyleSetting.get();
             if (!(setting.getValue() instanceof Integer) && setting.getValue() instanceof String) {
-                Optional<Integer> result = Converters.convertStringToFontStyle(setting.getValue());
+                Optional<Integer> result = ConverterUtil.convertStringToFontStyle(setting.getValue());
 
                 if (result.isEmpty()) {
                     addSetting(Setting.Type.STYLE, Font.PLAIN);
@@ -79,7 +79,7 @@ public class TextRender extends AbstractRender {
             Setting setting = optionalColorSetting.get();
 
             if (!(setting.getValue() instanceof Color) && setting.getValue() instanceof String) {
-                Optional<Color> result = Converters.convertStringToColor(setting.getValue());
+                Optional<Color> result = ConverterUtil.convertStringToColor(setting.getValue());
                 if (result.isEmpty()) {
                     addSetting(Setting.Type.COLOR, new Color(255, 255, 255, 255));
                     getLogger().warn("This value= '" + setting.getValue() + "' not is a color or not is convertible "
