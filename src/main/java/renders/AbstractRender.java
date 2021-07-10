@@ -10,25 +10,25 @@ import java.util.Set;
 
 public abstract class AbstractRender {
     private final Set<Setting> settings;
-    private final int allowedWith;
-    private final int allowedHeight;
+    private final int width;
+    private final int height;
     private final Logger logger;
 
-    public AbstractRender(Set<Setting> settings, int allowedWith, int allowedHeight, Logger logger) {
+    public AbstractRender(Set<Setting> settings, int width, int height, Logger logger) {
         this.settings = settings;
-        this.allowedWith = allowedWith;
-        this.allowedHeight = allowedHeight;
+        this.width = width;
+        this.height = height;
         this.logger = logger;
     }
 
     public abstract Image renderImage(BufferedImage image, Graphics2D graphics);
 
-    public int getAllowedWith() {
-        return allowedWith;
+    public int getWidth() {
+        return width;
     }
 
-    public int getAllowedHeight() {
-        return allowedHeight;
+    public int getHeight() {
+        return height;
     }
 
     public Set<Setting> getSettings() {

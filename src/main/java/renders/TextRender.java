@@ -17,9 +17,9 @@ public class TextRender extends AbstractRender {
     private final PlaceholderUtil placeholderUtil;
     private final DrawUtil drawUtil;
 
-    public TextRender(Set<Setting> settings, int allowedWidth, int allowedHeight, PlaceholderUtil placeholderUtil,
+    public TextRender(Set<Setting> settings, int width, int height, PlaceholderUtil placeholderUtil,
                       DrawUtil drawUtil) {
-        super(settings, allowedWidth, allowedHeight, Logger.getLogger(TextRender.class));
+        super(settings, width, height, Logger.getLogger(TextRender.class));
 
         this.placeholderUtil = placeholderUtil;
         this.drawUtil = drawUtil;
@@ -91,7 +91,6 @@ public class TextRender extends AbstractRender {
 
                 if (result.isEmpty()) {
                     addSetting(Setting.Type.STYLE, Font.PLAIN);
-                    getLogger().warn("Provided Style value is not supported. Using default value = PLAIN");
                 } else {
                     addSetting(Setting.Type.STYLE, result.get());
                 }
