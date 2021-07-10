@@ -1,4 +1,5 @@
 import renders.AbstractRender;
+import renders.BackgroundColorRender;
 import renders.Setting;
 import renders.TextRender;
 import utils.DrawUtil;
@@ -18,15 +19,24 @@ public class ImageGenerator {
         long start = System.currentTimeMillis();
         PlaceholderUtil placeholderUtil = new PlaceholderUtil(new HashMap<>());
         DrawUtil drawUtil = new DrawUtil();
-        Set<Setting> settings = new HashSet<>();
-        settings.add(new Setting(Setting.Type.SIZE, 12));
-        settings.add(new Setting(Setting.Type.FONT, "Ubuntu"));
-        settings.add(new Setting(Setting.Type.COLOR, new Color(100, 255, 10)));
-
-        AbstractRender render = new TextRender(settings, 200, 200, placeholderUtil, drawUtil);
-
-        BufferedImage tmp = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage tmp = new BufferedImage(200, 100, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics2D = tmp.createGraphics();
+
+        //Background
+        Set<Setting> backgroundSettings = new HashSet<>();
+        backgroundSettings.add(new Setting(Setting.Type.COLOR, new Color(0, 0, 0)));
+        AbstractRender backgroundColorRender = new BackgroundColorRender(backgroundSettings, 200, 100);
+        backgroundColorRender.renderImage(tmp, graphics2D);
+
+
+        //Text
+        Set<Setting> fontSettings = new HashSet<>();
+        fontSettings.add(new Setting(Setting.Type.SIZE, 12));
+        fontSettings.add(new Setting(Setting.Type.FONT, "Ubuntu"));
+        fontSettings.add(new Setting(Setting.Type.TEXT, "Hello world in Image"));
+        fontSettings.add(new Setting(Setting.Type.COLOR, new Color(100, 255, 10)));
+
+        AbstractRender render = new TextRender(fontSettings, 0, 0, placeholderUtil, drawUtil);
 
         render.renderImage(tmp, graphics2D);
 
